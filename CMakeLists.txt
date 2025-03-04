@@ -3,4 +3,7 @@ project(JsonParser)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(JsonParser main.cpp)
+add_executable(JsonParser main.cpp
+        parser.h
+        parser.cpp Tokenizer.h
+        Tokenizer.h)
