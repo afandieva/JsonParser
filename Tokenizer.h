@@ -23,7 +23,7 @@ struct  Token
 {
     std::string value;
     TOKEN type;
-    std::string toString();
+    std::string toStringStr();
 };
 
 class Tokenizer
@@ -35,8 +35,8 @@ private:
 public:
     Tokenizer(std::string fileName);
     auto getWithoutWhiteSpace();
-    auto getToken();
-    auto hasMoreTokens();
+    Token getToken();
+    bool hasMoreTokens();
     void rollBackToken();
 };
 

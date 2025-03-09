@@ -2,8 +2,8 @@
 #define PARSER_JSON_PARSER
 
 #include "Tokenizer.h"
+#include "JSON.h"
 #include <memory>
-class JSON_Node;
 
 class JSONParser
 {

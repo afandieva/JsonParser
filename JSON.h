@@ -1,8 +1,10 @@
+#ifndef JSON
+#define JSON
+
 #include <iostream>
 #include <map>
 #include <memory>
 #include <vector>
-#include <string>
 
 class JSON_Node;
 
@@ -27,7 +29,6 @@ class JSON_Node
 
     TYPE type;
 
-    //---------------------------------
 
 public:
 
@@ -110,55 +111,74 @@ public:
         value.bValue = bl;
         type = TYPE::BOOLEAN;
     }
-    void setNull() {
-        type = TYPE::NULL_TYPE:
-    }
-    std::string JSON_Node::toString(int indentLevel) {
-        std::string spaceStr = std::string(indentLevel*' ');
-        std::string outputString = " ";
-        switch(type) {
-            case TYPE::STRING:
-                outputString += spaceStr + *value.s;
-            break;
-            case TYPE::NUMBER:
-                outputString += spaceStr +std::to_string(value.fValue);
-            break;
-            case TYPE::BOOLEAN:
-                outputString += spaceStr +(value.bValue ? "true":"false");
-            break;
-            case TYPE::NULL_TYPE:
-                outputString += spaceStr + "null";
-            break;
-            case TYPE::LIST:
-                std::cout<<"[";
-            int index = 0;
-            for(auto node: (*value.list)) {
-                outputString += node -> toString(indentLevel + 1);
-                if(index<(*value.list).size() - 1) {
-                    outputString += spaceStr+ ",";
-                }
-                index++;
-            }
-            outputString += spaceStr+ "]\n";
-            break;
-            case TYPE::OBJECT:
-                outputString += "{\n";
-            for(JSONObject::iterator i=(*value.object).begin(); i != (*value.object).end(); i++) {
-                outputString += spaceStr+ i -> first + ": ";
-                outputString += i -> second -> toString(indentLevel + 1);
-                JSONObject::iterator next = i;
-                next++;
-                if(next != (*value.object).end()) {
-                    outputString += spaceStr+ ",";
-                }
-                outputString += spaceStr+ "\n";
-            }
-            outputString += "}\n";
-        }
-        return outputString;
 
+    void setNull()
+    {
+        type = TYPE::NULL_TYPE;
     }
-    void JSON_Node::printNode(int indentLevel) {
-        std::cout<<toString(indentLevel);
+
+    std::string toString(int indentLevels)
+    {
+        std::string spaceStr = std::to_string(indentLevels * ' ');
+        std::string outputStr = " ";
+
+        switch(type)
+        {
+            case TYPE::STRING:
+                outputStr += spaceStr + *value.s;
+                break;
+            case TYPE::NUMBER:
+                outputStr += spaceStr + std::to_string(value.fValue);
+                break;
+            case TYPE::BOOLEAN:
+                outputStr += spaceStr + (value.bValue ? "true" : "false");
+                break;
+            case TYPE::NULL_TYPE:
+                outputStr += spaceStr + "null";
+                break;
+            case TYPE::LIST:
+            {
+                std::cout << "[";
+                int index = 0;
+                for(auto node: (*value.list))
+                {
+                    outputStr += node -> toString(indentLevels + 1);
+                    if(index < (*value.list).size() - 1)
+                    {
+                        outputStr += spaceStr + ", ";
+                    }
+                    index++;
+                }
+                outputStr += spaceStr + "]\n";
+                break;
+            }
+            case TYPE::OBJECT:
+                outputStr += "{\n";
+                for(JSONObject::iterator i = (*value.object).begin(); i != (*value.object).end(); i++)
+                {
+                    outputStr += spaceStr + i -> first + ": ";
+                    outputStr += i -> second -> toString(indentLevels + 1);
+
+                    JSONObject::iterator next = i;
+                    next++;
+
+                    if(next != (*value.object).end())
+                    {
+                        outputStr += spaceStr + ", ";
+                    }
+                }
+
+                outputStr += " }\n";
+                break;
+        }
+
+        return outputStr;
+    }
+
+    void printNode(int indentLevel)
+    {
+        std::cout << toString(indentLevel);
     }
 };
+
+#endif //JSON
